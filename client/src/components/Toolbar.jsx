@@ -1,13 +1,27 @@
 import React from 'react';
 import style from '../styles/toolbar.module.scss'
+import toolState from "../store/toolState";
+import canvasState from "../store/canvasState";
+import Brush from "../tools/Brush";
+import Rect from "../tools/Rect";
+import Circle from "../tools/Circle";
+import Eraser from "../tools/Eraser";
+import Line from "../tools/Line";
 
 const Toolbar = () => {
+
     return (
         <div className={style.toolbar}>
-            <button className={`${style.toolbar__btn} ${style.brush}`} />
-            <button className={`${style.toolbar__btn} ${style.circle}`} />
-            <button className={`${style.toolbar__btn} ${style.eraser}`} />
-            <button className={`${style.toolbar__btn} ${style.line}`} />
+            <button className={`${style.toolbar__btn} ${style.brush}`}
+                    onClick={() => toolState.setTool(new Brush(canvasState.canvas))}/>
+            <button className={`${style.toolbar__btn} ${style.rect}`}
+                    onClick={() => toolState.setTool(new Rect(canvasState.canvas))}/>
+            <button className={`${style.toolbar__btn} ${style.circle}`}
+                    onClick={() => toolState.setTool(new Circle(canvasState.canvas))}/>
+            <button className={`${style.toolbar__btn} ${style.eraser}`}
+                    onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}/>
+            <button className={`${style.toolbar__btn} ${style.line}`}
+                    onClick={() => toolState.setTool(new Line(canvasState.canvas))}/>
             <input style={{ marginLeft: 10 }} type="color" />
             <button className={`${style.toolbar__btn} ${style.undo}`}/>
             <button className={`${style.toolbar__btn} ${style.redo}`}/>
