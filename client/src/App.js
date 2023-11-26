@@ -1,15 +1,23 @@
-import style from './styles/app.module.scss'
-import Toolbar from "./components/Toolbar";
-import SettingBar from "./components/SettingBar";
-import Canvas from "./components/Canvas";
+import style from './styles/app.module.scss';
+import {BrowserRouter, Routes, Route, Navigate, useParams, redirect} from 'react-router-dom';
+import Home from './pages/Home';
+import React from "react";
 
 function App() {
+    console.log(window.location.href)
+
     return (
-        <div className={style.app}>
-            <Toolbar/>
-            <SettingBar/>
-            <Canvas />
-        </div>
+        <BrowserRouter>
+            <div className={style.app}>
+                <Routes>
+                    <Route path={'/:id'} element={<Home />} />
+                    <Route
+                        path="*"
+                        element={<Navigate to={`f${(+new Date()).toString(16)}`} replace />}
+                    />
+                </Routes>
+            </div>
+        </BrowserRouter>
     );
 }
 

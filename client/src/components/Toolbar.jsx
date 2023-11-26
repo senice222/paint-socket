@@ -10,6 +10,11 @@ import Line from "../tools/Line";
 
 const Toolbar = () => {
 
+    const changeColor = e => {
+        toolState.setStrokeColor(e.target.value)
+        toolState.setFillColor(e.target.value)
+    }
+
     return (
         <div className={style.toolbar}>
             <button className={`${style.toolbar__btn} ${style.brush}`}
@@ -22,9 +27,11 @@ const Toolbar = () => {
                     onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}/>
             <button className={`${style.toolbar__btn} ${style.line}`}
                     onClick={() => toolState.setTool(new Line(canvasState.canvas))}/>
-            <input style={{ marginLeft: 10 }} type="color" />
-            <button className={`${style.toolbar__btn} ${style.undo}`}/>
-            <button className={`${style.toolbar__btn} ${style.redo}`}/>
+            <input style={{ marginLeft: 10 }} type="color" onChange={e => changeColor(e)}/>
+            <button className={`${style.toolbar__btn} ${style.undo}`}
+                    onClick={() => canvasState.undo()}/>
+            <button className={`${style.toolbar__btn} ${style.redo}`}
+                    onClick={() => canvasState.redo()}/>
             <button className={`${style.toolbar__btn} ${style.save}`}/>
         </div>
     );
