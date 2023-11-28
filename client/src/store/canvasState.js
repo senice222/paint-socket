@@ -1,14 +1,23 @@
 import {makeAutoObservable} from "mobx";
-import data from "bootstrap/js/src/dom/data";
 
 class CanvasState {
     canvas = null
     undoList = []
     redoList = []
     username = ""
+    socket = ""
+    sessionId = ""
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setSocket(socket) {
+        this.socket = socket
+    }
+
+    setSessionId(sessionId) {
+        this.sessionId = sessionId
     }
 
     setUsername(username) {

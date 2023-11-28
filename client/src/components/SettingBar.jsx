@@ -4,6 +4,7 @@ import toolState from "../store/toolState";
 
 
 const SettingBar = () => {
+
     return (
         <div className={style.settingBar}>
             <label htmlFor="line-width">Толщина линии</label>

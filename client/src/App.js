@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import React from "react";
 
 function App() {
-    console.log(window.location.href)
 
     return (
         <BrowserRouter>
