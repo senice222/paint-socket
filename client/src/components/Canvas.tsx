@@ -5,17 +5,15 @@ import canvasState from "../store/canvasState";
 import toolState from "../store/toolState";
 import Brush from "../tools/Brush";
 import {Button, Modal} from "react-bootstrap";
-import Eraser from "../tools/Eraser";
 import {useParams} from "react-router-dom";
-import Rect from "../tools/Rect";
 import axios from 'axios'
-import Circle from "../tools/Circle";
-import Line from "../tools/Line";
+import {handleUploadImage} from "../utils/handleUploadImage";
+import {handleDraw} from "../utils/handleDraw";
 
 const Canvas = observer(() => {
-    const canvasRef = useRef()
-    const [modal, setModal] = useState(true)
-    const usernameRef = useRef()
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const usernameRef = useRef<HTMLInputElement>(null)
+    const [modal, setModal] = useState<boolean>(true)
     const {id} = useParams()
 
     useEffect(() => {
@@ -23,6 +21,7 @@ const Canvas = observer(() => {
             const socket = new WebSocket('ws://localhost:5000');
             canvasState.setSocket(socket)
             canvasState.setSessionId(id)
+            if (!canvasRef.current || !id) return;
             toolState.setTool(new Brush(canvasRef.current, socket, id))
             socket.onopen = () => {
                 socket.send(JSON.stringify({
@@ -38,7 +37,7 @@ const Canvas = observer(() => {
                         console.log(`user connected ${msg.username}`)
                         break
                     case "draw":
-                        drawHandler(msg)
+                        handleDraw(msg, canvasRef)
                         break
                 }
             }
@@ -46,57 +45,18 @@ const Canvas = observer(() => {
     }, [canvasState.username]);
 
     useEffect(() => {
-        canvasState.setCanvas(canvasRef.current)
-        let ctx = canvasRef.current.getContext('2d')
-        axios.get(`http://localhost:5000/image?id=${id}`)
-            .then(response => {
-                const img = new Image()
-                img.src = response.data
-                img.onload = () => {
-                    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-                    ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height)
-                    ctx.stroke()
-                }
-            })
+        handleUploadImage(canvasRef, id)
     }, []);
 
-    const drawHandler = (msg) => {
-        const figure = msg.figure
-        const ctx = canvasRef.current.getContext('2d')
-        console.log(figure)
-        switch (figure.type) {
-            case "brush":
-                Brush.staticDraw(ctx, figure.x, figure.y, figure.color, figure.lineWidth)
-                break
-            case "circle":
-                Circle.staticDraw(
-                    ctx, figure.x, figure.y, figure.r, figure.color, figure.strokeStyle, figure.lineWidth
-                )
-                break
-            case "rect":
-                Rect.staticDraw(
-                    ctx, figure.x, figure.y, figure.w, figure.h, figure.color, figure.strokeStyle, figure.lineWidth
-                )
-                break
-            case "eraser":
-                Eraser.staticDraw(ctx, figure.x, figure.y, figure.color)
-                break
-            case "line":
-                Line.staticDraw(ctx, figure.x, figure.y, figure.color)
-                break
-            case "Finish":
-                ctx.beginPath()
-                break
-        }
-    }
-
     const mouseDownHandler = () => {
+        if (!canvasRef.current) return;
         canvasState.pushToUndo(canvasRef.current.toDataURL())
         axios.post(`http://localhost:5000/image?id=${id}`, {img: canvasRef.current.toDataURL()})
             .then(res => console.log(res.data))
     }
 
     const connectHandler = () => {
+        if (!usernameRef.current) return;
         canvasState.setUsername(usernameRef.current.value)
         setModal(false)
     }

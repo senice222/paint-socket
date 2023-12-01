@@ -10,12 +10,13 @@ import Line from "../tools/Line";
 
 const Toolbar = () => {
 
-    const changeColor = e => {
+    const changeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
         toolState.setStrokeColor(e.target.value)
         toolState.setFillColor(e.target.value)
     }
 
     const download = () => {
+        if (!canvasState.canvas) return;
         const dataURL = canvasState.canvas.toDataURL()
         console.log(dataURL)
         const a = document.createElement('a')
@@ -37,8 +38,8 @@ const Toolbar = () => {
             <button className={`${style.toolbar__btn} ${style.eraser}`}
                     onClick={() => toolState.setTool(new Eraser(canvasState.canvas,  canvasState.socket, canvasState.sessionId))}/>
             <button className={`${style.toolbar__btn} ${style.line}`}
-                    onClick={() => toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
-            <input style={{ marginLeft: 10 }} type="color" onChange={e => changeColor(e)}/>
+                    onClick={() => toolState.setTool(new Line(canvasState.canvas))}/>
+            <input style={{ marginLeft: 10 }} type="color" onChange={e => changeColor(e)} />
             <button className={`${style.toolbar__btn} ${style.undo}`}
                     onClick={() => canvasState.undo()}/>
             <button className={`${style.toolbar__btn} ${style.redo}`}

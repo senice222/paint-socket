@@ -1,7 +1,6 @@
 import style from './styles/app.module.scss';
-import {BrowserRouter, Routes, Route, Navigate, useParams, redirect} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import Home from './pages/Home';
-import React from "react";
 
 function App() {
 
