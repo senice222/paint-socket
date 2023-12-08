@@ -18,7 +18,6 @@ const Toolbar = () => {
     const download = () => {
         if (!canvasState.canvas) return;
         const dataURL = canvasState.canvas.toDataURL()
-        console.log(dataURL)
         const a = document.createElement('a')
         a.href = dataURL
         a.download = canvasState.sessionId + ".jpg"
@@ -36,10 +35,10 @@ const Toolbar = () => {
             <button className={`${style.toolbar__btn} ${style.circle}`}
                     onClick={() => toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
             <button className={`${style.toolbar__btn} ${style.eraser}`}
-                    onClick={() => toolState.setTool(new Eraser(canvasState.canvas,  canvasState.socket, canvasState.sessionId))}/>
+                    onClick={() => toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
             <button className={`${style.toolbar__btn} ${style.line}`}
                     onClick={() => toolState.setTool(new Line(canvasState.canvas))}/>
-            <input style={{ marginLeft: 10 }} type="color" onChange={e => changeColor(e)} />
+            <input style={{marginLeft: 10}} type="color" onChange={e => changeColor(e)}/>
             <button className={`${style.toolbar__btn} ${style.undo}`}
                     onClick={() => canvasState.undo()}/>
             <button className={`${style.toolbar__btn} ${style.redo}`}

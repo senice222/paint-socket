@@ -1,7 +1,8 @@
 import canvasState from "../store/canvasState";
 import axios from "axios";
+import {RefObject} from "react";
 
-export const handleUploadImage = (canvasRef: any, id: string | undefined) => {
+export const handleUploadImage = (canvasRef: RefObject<HTMLCanvasElement>, id: string | undefined) => {
     try {
         if (!canvasRef.current) return;
         canvasState.setCanvas(canvasRef.current)

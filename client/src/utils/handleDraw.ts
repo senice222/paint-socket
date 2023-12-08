@@ -3,8 +3,9 @@ import Brush from "../tools/Brush";
 import Circle from "../tools/Circle";
 import Rect from "../tools/Rect";
 import Eraser from "../tools/Eraser";
+import {RefObject} from "react";
 
-export const handleDraw = (msg: Figure, canvasRef: any) => {
+export const handleDraw = (msg: Figure, canvasRef: RefObject<HTMLCanvasElement>) => {
     const figure = msg.figure
     if (!canvasRef.current) return;
     const ctx = canvasRef.current.getContext('2d')

@@ -25,7 +25,6 @@ class ToolState {
     }
 
     setLineWidth(width: number) {
-        console.log(width)
         if (this.tool) {
             this.tool.lineWidth = width
         }
